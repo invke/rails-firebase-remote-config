@@ -11,5 +11,6 @@ Gem::Specification.new do |s|
   s.description = "Firebase Remote Config for Ruby on Rails"
   s.authors     = ["Montgomery Anderson"]
   s.email       = "montgomery.c.anderson@gmail.com"
-  s.files       = ["lib/firebase_remote_config"]
+
+  s.files = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
 end
