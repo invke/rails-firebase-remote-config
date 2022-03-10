@@ -25,10 +25,10 @@ RSpec.describe RemoteConfig::Flagging do
       it "raises a `RemoteConfig::UnknownFeatureFlagError` error" do
         allow(adapter_double).to receive(:fetch_feature_flag).with(key).and_return(nil)
         expect { instance.feature_enabled? key }
-        .to raise_error(
-          an_instance_of(RemoteConfig::UnknownFeatureFlagError)
-            .and having_attributes(key: key)
-        )
+          .to raise_error(
+            an_instance_of(RemoteConfig::UnknownFeatureFlagError)
+              .and having_attributes(key: key)
+          )
       end
     end
 
@@ -77,10 +77,10 @@ RSpec.describe RemoteConfig::Flagging do
       it "raises a `RemoteConfig::UnknownReleaseFlagError` error" do
         allow(adapter_double).to receive(:fetch_release_flag).with(key).and_return(nil)
         expect { instance.released? key }
-        .to raise_error(
-          an_instance_of(RemoteConfig::UnknownReleaseFlagError)
-            .and having_attributes(key: key)
-        )
+          .to raise_error(
+            an_instance_of(RemoteConfig::UnknownReleaseFlagError)
+              .and having_attributes(key: key)
+          )
       end
     end
 
