@@ -26,4 +26,18 @@ module RemoteConfig
       "Unknown release flag: #{key}"
     end
   end
+
+  class UnknownReleaseStageError < FlagError
+    attr_reader :value
+
+    def initialize(key, value)
+      @value = value
+
+      super(key)
+    end
+
+    def message
+      "Unknown release stage \"#{value}\" for release flag: #{key}"
+    end
+  end
 end

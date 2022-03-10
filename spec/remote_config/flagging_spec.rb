@@ -101,6 +101,19 @@ RSpec.describe RemoteConfig::Flagging do
         expect(instance.released? key).to be(false)
       end
     end
+
+    context "when the flags current release stage not a recognised release stage" do
+      it "raises a `RemoteConfig::UnkownReleaseStageError` error" do
+        allow(adapter_double).to receive(:fetch_release_flag).with(key).and_return("misc")
+        allow(Rails).to receive(:env).and_return("development".inquiry)
+
+        expect { instance.released? key }
+          .to raise_error(
+            an_instance_of(RemoteConfig::UnknownReleaseStageError)
+              .and having_attributes(key: key, value: "misc")
+          )
+      end
+    end
   end
 end
 
