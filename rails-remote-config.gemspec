@@ -2,13 +2,13 @@
 
 lib = File.expand_path("lib", __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "firebase_remote_config/version"
+require "remote_config/version"
 
 Gem::Specification.new do |s|
-  s.name        = "rails-firebase-remote-config"
-  s.version     = FirebaseRemoteConfig::VERSION
-  s.summary     = "Firebase Remote Config for Ruby on Rails"
-  s.description = "Firebase Remote Config for Ruby on Rails"
+  s.name        = "rails-remote-config"
+  s.version     = RemoteConfig::VERSION
+  s.summary     = "Remote Config for Ruby on Rails"
+  s.description = "Remote Config for Ruby on Rails"
   s.authors     = ["Montgomery Anderson"]
   s.email       = "montgomery.c.anderson@gmail.com"
 
