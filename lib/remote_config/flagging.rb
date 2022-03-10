@@ -11,6 +11,13 @@ module RemoteConfig
       value
     end
 
-    def released?(key); end
+    def released?(key)
+      value = RemoteConfig.adapter.fetch_release_flag(key)
+
+      raise RemoteConfig::UnknownReleaseFlagError, key if value.nil?
+
+      current_release_stage = RemoteConfig.configuration.release_stages[value.to_sym]
+      current_release_stage.map(&:to_s).include? Rails.env
+    end
   end
 end

@@ -53,5 +53,54 @@ RSpec.describe RemoteConfig::Flagging do
       end
     end
   end
+
+  describe "#released?" do
+    let(:key) { "hocus.pocus" }
+    let(:adapter_double) { instance_double(RemoteConfig::Adapters::RubyConfigAdapter) }
+    let(:release_stages) do
+      {
+        production:  %i[production uat development],
+        uat:         %i[uat development],
+        development: %i[development]
+      }
+    end
+
+    before do
+      allow(RemoteConfig).to receive(:adapter).and_return(adapter_double)
+
+      RemoteConfig.configure do |config|
+        config.release_stages = release_stages
+      end
+    end
+
+    context "when the adapter cannot find a value for the key" do
+      it "raises a `RemoteConfig::UnknownReleaseFlagError` error" do
+        allow(adapter_double).to receive(:fetch_release_flag).with(key).and_return(nil)
+        expect { instance.released? key }
+        .to raise_error(
+          an_instance_of(RemoteConfig::UnknownReleaseFlagError)
+            .and having_attributes(key: key)
+        )
+      end
+    end
+
+    context "when the current environment is in the flags current release stage" do
+      it "returns true" do
+        allow(adapter_double).to receive(:fetch_release_flag).with(key).and_return("development")
+        allow(Rails).to receive(:env).and_return("development".inquiry)
+
+        expect(instance.released? key).to be(true)
+      end
+    end
+
+    context "when the current environment is not in the flags current release stage" do
+      it "returns false" do
+        allow(adapter_double).to receive(:fetch_release_flag).with(key).and_return("development")
+        allow(Rails).to receive(:env).and_return("uat".inquiry)
+
+        expect(instance.released? key).to be(false)
+      end
+    end
+  end
 end
 

@@ -20,4 +20,10 @@ module RemoteConfig
       "Non-boolean feature flag: #{key}"
     end
   end
+
+  class UnknownReleaseFlagError < FlagError
+    def message
+      "Unknown release flag: #{key}"
+    end
+  end
 end

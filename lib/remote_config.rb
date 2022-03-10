@@ -14,6 +14,12 @@ module RemoteConfig
 
     # The options hash to be passed to the adapter at initialization
     :adapter_options,
+
+    # An hash of release stages to an array of rails environments that will have
+    # the it will release to.
+    :release_stages,
+
+    keyword_init: true
   )
 
   class << self
@@ -25,6 +31,11 @@ module RemoteConfig
       @configuration ||= Configuration.new(
         adapter:         Adapters::RubyConfigAdapter,
         adapter_options: {},
+
+        release_stages: {
+          production:  %i[production development],
+          development: %i[development]
+        }
       )
     end
 
