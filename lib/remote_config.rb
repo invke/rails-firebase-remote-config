@@ -2,6 +2,8 @@
 
 require "remote_config/version"
 require "remote_config/engine"
+require "remote_config/flagging"
+require "remote_config/exceptions"
 require "remote_config/adapters/base"
 require "remote_config/adapters/ruby_config_adapter"
 
