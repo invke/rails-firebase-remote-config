@@ -32,19 +32,51 @@ RSpec.describe RemoteConfig::Flagging do
       end
     end
 
-    context "when the adapter finds a value for the key" do
-      it "returns true when the adapter returns true" do
-        allow(adapter_double).to receive(:fetch_feature_flag).with(key).and_return(true)
+    context "when the adapter returns true for the key" do
+      before do
+        allow(adapter_double).to receive(:fetch_feature_flag)
+          .with(key).and_return(true)
+      end
+
+      it "returns true" do
         expect(instance.feature_enabled?(key)).to be(true)
       end
 
-      it "returns false when the adapter returns false" do
-        allow(adapter_double).to receive(:fetch_feature_flag).with(key).and_return(false)
+      it "yields a given block and returns true" do
+        block_yielded = false
+        return_value = instance.feature_enabled?(key) { block_yielded = true }
+
+        expect(block_yielded).to be(true)
+        expect(return_value).to be(true)
+      end
+    end
+
+    context "when the adapter returns false for the key" do
+      before do
+        allow(adapter_double).to receive(:fetch_feature_flag)
+          .with(key).and_return(false)
+      end
+
+      it "returns false" do
         expect(instance.feature_enabled?(key)).to be(false)
       end
 
-      it "raises a `RemoteConfig::NonBooleanFeatureFlagError` when the adapter doesn't return a boolean" do
-        allow(adapter_double).to receive(:fetch_feature_flag).with(key).and_return("alakazam")
+      it "doesn't yield the given block and returns false" do
+        block_yielded = false
+        return_value = instance.feature_enabled?(key) { block_yielded = true }
+
+        expect(block_yielded).to be(false)
+        expect(return_value).to be(false)
+      end
+    end
+
+    context "when the adapter returns a non-boolean value" do
+      before do
+        allow(adapter_double).to receive(:fetch_feature_flag)
+          .with(key).and_return("alakazam")
+      end
+
+      it "raises a `RemoteConfig::NonBooleanFeatureFlagError`" do
         expect { instance.feature_enabled? key }
           .to raise_error(
             an_instance_of(RemoteConfig::NonBooleanFeatureFlagError)
@@ -58,19 +90,16 @@ RSpec.describe RemoteConfig::Flagging do
     # rubocop:disable Rails/Inquiry
     let(:key) { "hocus.pocus" }
     let(:adapter_double) { instance_double(RemoteConfig::Adapters::RubyConfigAdapter) }
-    let(:release_stages) do
-      {
-        production:  %i[production uat development],
-        uat:         %i[uat development],
-        development: %i[development]
-      }
-    end
 
     before do
       allow(RemoteConfig).to receive(:adapter).and_return(adapter_double)
 
       RemoteConfig.configure do |config|
-        config.release_stages = release_stages
+        config.release_stages = {
+          production:  %i[production uat development],
+          uat:         %i[uat development],
+          development: %i[development]
+        }
       end
     end
 
@@ -86,20 +115,42 @@ RSpec.describe RemoteConfig::Flagging do
     end
 
     context "when the current environment is in the flags current release stage" do
-      it "returns true" do
-        allow(adapter_double).to receive(:fetch_release_flag).with(key).and_return("development")
+      before do
         allow(Rails).to receive(:env).and_return("development".inquiry)
+        allow(adapter_double).to receive(:fetch_release_flag)
+          .with(key).and_return("development")
+      end
 
+      it "returns true" do
         expect(instance.released?(key)).to be(true)
+      end
+
+      it "yields a given block and returns true" do
+        block_yielded = false
+        return_value = instance.released?(key) { block_yielded = true }
+
+        expect(block_yielded).to be(true)
+        expect(return_value).to be(true)
       end
     end
 
     context "when the current environment is not in the flags current release stage" do
-      it "returns false" do
-        allow(adapter_double).to receive(:fetch_release_flag).with(key).and_return("development")
+      before do
         allow(Rails).to receive(:env).and_return("uat".inquiry)
+        allow(adapter_double).to receive(:fetch_release_flag)
+          .with(key).and_return("development")
+      end
 
+      it "returns false" do
         expect(instance.released?(key)).to be(false)
+      end
+
+      it "doesn't yield the given block and returns false" do
+        block_yielded = false
+        return_value = instance.released?(key) { block_yielded = true }
+
+        expect(block_yielded).to be(false)
+        expect(return_value).to be(false)
       end
     end
 
