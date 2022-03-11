@@ -1,0 +1,7 @@
+inherit_gem:
+  paperkite-rubocop: config/base.yml
+
+AllCops:
+  Exclude:
+    - spec/rails_app/**/*
+    - bin/*

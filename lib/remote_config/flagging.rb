@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module RemoteConfig
+  # Module to be included into the using application to allow for checking
+  # for feature and release flags.
   module Flagging
     def feature_enabled?(key)
       value = RemoteConfig.adapter.fetch_feature_flag(key)

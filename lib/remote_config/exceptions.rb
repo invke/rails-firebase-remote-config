@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
+# rubocop:disable Style/Documentation
 module RemoteConfig
   class FlagError < StandardError
     attr_reader :key
 
     def initialize(key)
       @key = key
+
+      super
     end
   end
 
@@ -41,3 +44,4 @@ module RemoteConfig
     end
   end
 end
+# rubocop:enable Style/Documentation

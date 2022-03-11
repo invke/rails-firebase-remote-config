@@ -11,6 +11,9 @@ Gem::Specification.new do |s|
   s.description = "Remote Config for Ruby on Rails"
   s.authors     = ["Montgomery Anderson"]
   s.email       = "montgomery.c.anderson@gmail.com"
+  s.homepage    = "https://github.com/paperkite/rails-remote-config"
+
+  s.required_ruby_version = 2.5
 
   s.files = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
 end

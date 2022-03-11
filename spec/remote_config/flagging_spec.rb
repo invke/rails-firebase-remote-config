@@ -27,7 +27,7 @@ RSpec.describe RemoteConfig::Flagging do
         expect { instance.feature_enabled? key }
           .to raise_error(
             an_instance_of(RemoteConfig::UnknownFeatureFlagError)
-              .and having_attributes(key: key)
+              .and(having_attributes(key: key))
           )
       end
     end
@@ -35,12 +35,12 @@ RSpec.describe RemoteConfig::Flagging do
     context "when the adapter finds a value for the key" do
       it "returns true when the adapter returns true" do
         allow(adapter_double).to receive(:fetch_feature_flag).with(key).and_return(true)
-        expect(instance.feature_enabled? key).to be(true)
+        expect(instance.feature_enabled?(key)).to be(true)
       end
 
       it "returns false when the adapter returns false" do
         allow(adapter_double).to receive(:fetch_feature_flag).with(key).and_return(false)
-        expect(instance.feature_enabled? key).to be(false)
+        expect(instance.feature_enabled?(key)).to be(false)
       end
 
       it "raises a `RemoteConfig::NonBooleanFeatureFlagError` when the adapter doesn't return a boolean" do
@@ -48,13 +48,14 @@ RSpec.describe RemoteConfig::Flagging do
         expect { instance.feature_enabled? key }
           .to raise_error(
             an_instance_of(RemoteConfig::NonBooleanFeatureFlagError)
-              .and having_attributes(key: key)
+              .and(having_attributes(key: key))
           )
       end
     end
   end
 
   describe "#released?" do
+    # rubocop:disable Rails/Inquiry
     let(:key) { "hocus.pocus" }
     let(:adapter_double) { instance_double(RemoteConfig::Adapters::RubyConfigAdapter) }
     let(:release_stages) do
@@ -79,7 +80,7 @@ RSpec.describe RemoteConfig::Flagging do
         expect { instance.released? key }
           .to raise_error(
             an_instance_of(RemoteConfig::UnknownReleaseFlagError)
-              .and having_attributes(key: key)
+              .and(having_attributes(key: key))
           )
       end
     end
@@ -89,7 +90,7 @@ RSpec.describe RemoteConfig::Flagging do
         allow(adapter_double).to receive(:fetch_release_flag).with(key).and_return("development")
         allow(Rails).to receive(:env).and_return("development".inquiry)
 
-        expect(instance.released? key).to be(true)
+        expect(instance.released?(key)).to be(true)
       end
     end
 
@@ -98,7 +99,7 @@ RSpec.describe RemoteConfig::Flagging do
         allow(adapter_double).to receive(:fetch_release_flag).with(key).and_return("development")
         allow(Rails).to receive(:env).and_return("uat".inquiry)
 
-        expect(instance.released? key).to be(false)
+        expect(instance.released?(key)).to be(false)
       end
     end
 
@@ -110,10 +111,10 @@ RSpec.describe RemoteConfig::Flagging do
         expect { instance.released? key }
           .to raise_error(
             an_instance_of(RemoteConfig::UnknownReleaseStageError)
-              .and having_attributes(key: key, value: "misc")
+              .and(having_attributes(key: key, value: "misc"))
           )
       end
     end
+    # rubocop:enable Rails/Inquiry
   end
 end
-

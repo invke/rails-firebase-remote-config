@@ -16,3 +16,7 @@ end
 group :test, :development do
   gem "pry"
 end
+
+group :development do
+  gem "paperkite-rubocop", tag: "v1.0.0-beta.6"
+end
