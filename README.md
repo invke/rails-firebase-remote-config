@@ -15,20 +15,30 @@ include RemoteConfig::Flagging
 ```
 
 ```rb
-caffeinate if feature? "coffee.caffeinated"
+caffeinate if feature_enabled? "coffee.caffeinated"
 ```
 
 ```rb
-feature? "coffee.caffeinated" do
+feature_enabled? "coffee.caffeinated" do
   caffeinate
+end
+```
+
+The `RemoteConfig::Flagging` module is included into the rails route mapper so you can use flagging at route setup. This allows the deployment of unreleased endpoints that aren't routable until they are released.
+
+```rb
+routes do
+  feature_enabled? "coffee_ordering" do
+    resource :coffee
+  end
 end
 ```
 
 ### Release flags
 
-Release flags work with the same syntax (replace `feature?` with `released?`), however instead of checking for boolean truthfulness, the key corresponds to a stage that it is released to and it evaluates if the current environment is in the stage.
+Release flags work with the same syntax (replace `feature?` with `released?`), however instead of checking for boolean truthfulness, the value of the falg corresponds to a stage that it is released to. The `released?` method will then be checking if the current environment is in that release stage and returning true if so.
 
-For example, if your configured environments are:
+For example, if your configured release stages are:
 ```rb
 RemoteConfig.configure do |config|
   config.release_stages = {
@@ -47,7 +57,7 @@ Then the following values are returned:
 | qa          | false       | true  | true       |
 | production  | false       | false | true       |
 
-*Current environments down the left VS the value in the config along the top.*
+*Current environments down the left VS the release stages along the top.*
 
 Alternatively, if you wanted to release to specific environments instead of progressing through them, you can return an array of the exact environment(s) that you want it released on.
 
@@ -66,16 +76,6 @@ prompt_for_coffee_ordering if released? "coffee_ordering.cta"
 ```rb
 released? "coffee_ordering.cta" do
   prompt_for_coffee_ordering
-end
-```
-
-Release flags also have a route-level flagging, to allow the deployment of unreleased endpoints that aren't routable until they are released.
-
-```rb
-routes do
-  released? "coffee_ordering" do
-    resource :coffee
-  end
 end
 ```
 
