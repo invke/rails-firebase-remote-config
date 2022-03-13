@@ -28,7 +28,11 @@ module RemoteConfig
     def configuration
       @configuration ||= Configuration.new(
         adapter:         Adapters::RubyConfigAdapter,
-        adapter_options: {},
+        adapter_options: {
+          const_name:        "Settings",
+          feature_flags_key: "feature_flags",
+          release_flags_key: "release_flags"
+        },
 
         release_stages:  {
           production:  %i[production development],

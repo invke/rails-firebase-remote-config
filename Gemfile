@@ -6,6 +6,7 @@ ruby RUBY_VERSION
 
 gemspec
 
+gem "config"
 gem "rails"
 
 group :test do
