@@ -19,6 +19,8 @@ jobs:
           bundler-cache: true
       - uses: reviewdog/action-rubocop@v2
         with:
+          rubocop_version: 1.14.0
+          rubocop_extensions: rubocop-rails:2.10.1 rubocop-performance:1.11.2 rubocop-rspec:2.3.0
           reporter: github-pr-review
           use_bundler: true
 
