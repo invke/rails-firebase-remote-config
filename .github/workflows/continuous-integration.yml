@@ -1,0 +1,24 @@
+name: Continuous Integration
+
+on:
+  pull_request:
+    branches:
+      - master
+      - develop
+      - epic/*
+
+jobs:
+
+  rspec:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Run RSpec
+        env:
+          RAILS_ENV: test
+        run: |
+          bundle exec rails db:test:prepare
+          bundle exec rspec
