@@ -16,7 +16,6 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.0.1
-          bundler-cache: true
       - name: Run Rubocop
         run: |
           bundle exec rubocop
@@ -31,7 +30,6 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby-version }}
-          bundler-cache: true
       - name: Run RSpec
         env:
           RAILS_ENV: test
