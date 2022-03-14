@@ -11,14 +11,14 @@ require_relative "./lib/remote_config/version"
 task :publish do
   if ENV["GITHUB_REF"] == "refs/tags/v#{RemoteConfig::VERSION}"
     puts "Release ref \"#{ENV["GITHUB_REF"]}\" matches gem version \"#{RemoteConfig::VERSION}\""
+
+    puts `gem build`
+    puts `gem push remote_config-#{RemoteConfig::VERSION}`
+
+    puts "Bult and pushed version #{RemoteConfig::VERSION} to rubygems"
     exit 0
   else
     puts "Release ref \"#{ENV["GITHUB_REF"]}\" does not match gem version \"#{RemoteConfig::VERSION}\""
     exit 1
   end
-
-  puts `gem build`
-  puts `gem push remote_config-#{RemoteConfig::VERSION}`
-
-  puts "Bult and pushed version #{RemoteConfig::VERSION} to rubygems"
 end
