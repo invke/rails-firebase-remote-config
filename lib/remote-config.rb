@@ -10,9 +10,9 @@ require "remote_config/adapters/ruby_config_adapter"
 # Root gem module containing config and adapter setup.
 module RemoteConfig
   Configuration = Struct.new(
-    # A string to constantize to get the adapter
+    # The adapter to be used for fetching the flags.
     :adapter,
-    # The options hash to be passed to the adapter at initialization
+    # The options hash to be passed to the adapter at initialization.
     :adapter_options,
     # An hash of release stages to an array of rails environments that will have
     # the it will release to.
@@ -42,7 +42,9 @@ module RemoteConfig
     end
 
     def adapter
-      @adapter ||= Configuration.adapter.constantize.new(Configuration.adapter_options)
+      @adapter ||= configuration.adapter.new(configuration.adapter_options)
     end
   end
 end
+
+require "remote_config/rails/routes" if defined? ::Rails

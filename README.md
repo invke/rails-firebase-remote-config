@@ -1,4 +1,4 @@
-# Rails remote config
+# Remote config
 
 A gem for managing feature and release flags in the backend and providing them remotely to a front-end.
 
