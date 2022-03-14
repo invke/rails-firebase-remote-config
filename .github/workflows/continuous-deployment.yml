@@ -6,9 +6,6 @@ on:
       - v[0-9]+.[0-9]+.[0-9]+ # e.g. 2.7.1
       - v[0-9]+.[0-9]+.[0-9]+-[a-z]+ # e.g. v2.7.1-beta
       - v[0-9]+.[0-9]+.[0-9]+-[a-z]+.[0-9]+ # e.g. v2.7.1-beta.1
-    branches:
-      - main
-      - feat/initial-remote-config # temporary for testing this works
 
 jobs:
 
