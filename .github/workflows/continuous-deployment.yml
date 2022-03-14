@@ -8,6 +8,7 @@ on:
       - v[0-9]+.[0-9]+.[0-9]+-[a-z]+.[0-9]+ # e.g. v2.7.1-beta.1
     branches:
       - main
+      - feat/initial-remote-config # temporary for testing this works
 
 jobs:
 
@@ -18,6 +19,10 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.1.1
+      - name: Install bundler and bundle
+        run: |
+          gem install bundler
+          bundle
       - name: Set up Rubygems credentials
         run: |
           mkdir -p ~/.gem
