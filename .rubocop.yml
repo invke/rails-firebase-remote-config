@@ -7,7 +7,3 @@ AllCops:
     - spec/rails_app/**/*
     - bin/*
     - Rakefile
-
-Naming/FileName:
-  Exclude:
-    - lib/remote-config.rb

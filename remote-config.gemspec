@@ -5,7 +5,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "remote_config/version"
 
 Gem::Specification.new do |spec|
-  spec.name        = "remote-config"
+  spec.name        = "remote_config"
   spec.version     = RemoteConfig::VERSION
   spec.authors     = ["Montgomery Anderson"]
   spec.email       = "montgomery.c.anderson@gmail.com"
