@@ -17,7 +17,8 @@ task :publish do
     exit 1
   end
 
-  sh "gem build"
-  sh "gem push remote_config-#{RemoteConfig::VERSION}"
+  puts `gem build`
+  puts `gem push remote_config-#{RemoteConfig::VERSION}`
+
   puts "Bult and pushed version #{RemoteConfig::VERSION} to rubygems"
 end
