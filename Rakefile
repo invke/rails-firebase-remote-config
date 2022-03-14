@@ -12,8 +12,8 @@ task :publish do
   if ENV["GITHUB_REF"] == "refs/tags/v#{RemoteConfig::VERSION}"
     puts "Release ref \"#{ENV["GITHUB_REF"]}\" matches gem version \"#{RemoteConfig::VERSION}\""
 
-    puts `gem build`
-    puts `gem push remote_config-#{RemoteConfig::VERSION}`
+    sh "gem build"
+    sh "ls *.gem | xargs gem push"
 
     puts "Bult and pushed version #{RemoteConfig::VERSION} to rubygems"
     exit 0
