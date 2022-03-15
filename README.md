@@ -4,6 +4,27 @@ A gem for managing feature and release flags in the backend and providing them r
 
 ## Usage
 
+Add the following lines to your Gemfile:
+
+```rb
+gem "config"
+gem "remote_config"
+```
+
+Run the Config gem's install generator:
+
+```sh
+rails g config:install
+```
+
+Run this gem's install generator:
+
+```sh
+rails g remote_config:install
+```
+
+With a default Config gem setup you should be good to go! Review the `app/config/remote_config` initializer and make sure the release stages make sense for your setup.
+
 ### Feature Flagging
 
 Flagging allows checking of config values and doing different things based on their boolean value.
@@ -88,7 +109,7 @@ By default the feature flagging looks for values under under `features` and rele
 If you want to nest a flag under another, for example, you have a `coffee_ordering` release flag and you want to add a `coffee_ordernig.pre_pay` release flag. Then you can nest the new flag under the old one and add a `_` key underneath it for it's own value, e.g:
 
 ```yml
-releases:
+release_flags:
   coffee_ordering:
     _: uat
     pre_pay: development
@@ -98,7 +119,7 @@ releases:
 An example `app/config/settings.yml` might look like:
 
 ```yml
-releases:
+release_flags:
   loyalty: uat
   coffee_ordering:
     _: production
@@ -109,14 +130,6 @@ releases:
     v3:
       _: development
 
-features:
+feature_flags:
   pay_in_car: true
 ```
-
-NOTE: it may be useful to split out your releases and features YML into different files and load them in.
-
-`app/config/releases.yml`
-`app/config/features.yml`
-
-TODO: provide ruby snippet of how to set this up in the initializers
-
