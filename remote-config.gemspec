@@ -18,4 +18,14 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = ">= 2.5.0"
 
   spec.files = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
+
+  spec.add_dependency "config"
+  spec.add_dependency "rails"
+
+  spec.add_development_dependency "paperkite-rubocop", "1.0.0-beta.6"
+  spec.add_development_dependency "rake"
+
+  spec.add_development_dependency "pry"
+  spec.add_development_dependency "rspec-rails"
+  spec.add_development_dependency "sqlite3"
 end
