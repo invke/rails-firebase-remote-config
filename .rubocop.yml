@@ -1,0 +1,9 @@
+inherit_gem:
+  paperkite-rubocop: config/base.yml
+
+AllCops:
+  TargetRubyVersion: 2.5
+  Exclude:
+    - spec/rails_app/**/*
+    - bin/*
+    - Rakefile
